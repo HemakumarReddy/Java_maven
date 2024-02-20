@@ -5,6 +5,13 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
+  environment {
+    IMAGE_TAG = "${BUILD_NUMBER}"
+    registryCredential = 'ecr:us-east-1:awscreds'
+    appRegistry = '353700960133.dkr.ecr.us-east-1.amazonaws.com/my-ecr-repo'
+    awsRegistry = "https://353700960133.dkr.ecr.us-east-1.amazonaws.com"
+  }
+
   stages {
     stage('Checkout') {
       steps {
