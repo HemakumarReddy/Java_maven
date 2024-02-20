@@ -1,10 +1,7 @@
 pipeline {
-  agent {
-    docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
-    }
-  }
+    
+  agent any 
+
   environment {
     IMAGE_TAG = "${BUILD_NUMBER}"
     registryCredential = 'ecr:us-east-1:awscreds'
@@ -15,8 +12,17 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passed'
-        git branch: 'main', url: 'https://github.com/HemakumarReddy/Java_maven.git'
+        git credentialsId: 'a42f1b38-aeae-4cf6-81cc-920a045fda18',         
+        url: 'https://github.com/HemakumarReddy/Java_maven.git',
+        branch: 'main'
+      }
+    }
+    stage('Install Maven') {
+      steps {
+        sh'''
+        sudo apt-get update
+        sudo apt-get install -y maven
+        '''
       }
     }
     stage('Build and Test') {
