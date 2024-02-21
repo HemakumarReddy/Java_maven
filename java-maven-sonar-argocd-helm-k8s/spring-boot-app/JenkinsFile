@@ -32,6 +32,17 @@ pipeline {
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
+    stage('Build Docker'){
+            steps{
+                script{
+                    sh '''
+                    echo 'Buid Docker Image'
+                    cd /var/lib/jenkins/workspace/java/java-maven-sonar-argocd-helm-k8s/spring-boot-app
+                    docker build -t  hemakumarux/cicd-e2e:${BUILD_NUMBER} .
+                    '''
+                }
+            }
+      }
 
     stage('Push the artifacts'){
        steps{
