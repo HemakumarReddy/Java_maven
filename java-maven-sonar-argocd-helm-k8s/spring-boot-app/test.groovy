@@ -13,7 +13,10 @@ pipeline {
     
     stage('Build code') {
       steps{
+        sh '''
+        cd /var/lib/jenkins/workspace/Java_test/java-maven-sonar-argocd-helm-k8s/spring-boot-app
         bat script: 'mvn compile'
+        '''
       }      
     }
 
